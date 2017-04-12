@@ -8,5 +8,6 @@ target 'RSS' do
   # Pods for RSS
     pod 'Alamofire'
     pod 'AlamofireRSSParser'
+    pod 'Kanna', '~> 2.1.0'
 
 end

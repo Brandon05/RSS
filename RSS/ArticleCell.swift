@@ -10,7 +10,9 @@ import UIKit
 
 class ArticleCell: UITableViewCell {
 
+    @IBOutlet var titleLabel: UILabel!
     @IBOutlet weak var linkLabel: UILabel!
+    @IBOutlet var descriptionLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -2,15 +2,18 @@ PODS:
   - Alamofire (4.3.0)
   - AlamofireRSSParser (2.0.0):
     - Alamofire
+  - Kanna (2.1.1)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireRSSParser
+  - Kanna (~> 2.1.0)
 
 SPEC CHECKSUMS:
   Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
   AlamofireRSSParser: bbad0689d597704025c4f101a1a31698fa2c1920
+  Kanna: 9b4b086c218703f2b94f5b21a466217dd2f9332e
 
-PODFILE CHECKSUM: 8fa18f944e53dad54e0378615c3861340e60bf96
+PODFILE CHECKSUM: 15060b179a3106405cadd5720e1bb576732727c8
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.1.1
