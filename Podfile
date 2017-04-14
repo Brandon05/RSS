@@ -9,5 +9,6 @@ target 'RSS' do
     pod 'Alamofire'
     pod 'AlamofireRSSParser'
     pod 'Kanna', '~> 2.1.0'
+    pod 'FeedlyKit', '~> 1.0'
 
 end

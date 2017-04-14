@@ -1,0 +1,6 @@
+framework module FeedlyKit {
+  umbrella header "FeedlyKit-umbrella.h"
+
+  export *
+  module * { export * }
+}
