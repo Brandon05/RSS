@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WAX-m2-QI4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WAX-m2-QI4">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -136,6 +136,7 @@
                         <segue destination="euy-ZG-xiF" kind="relationship" relationship="viewControllers" id="fYG-P2-NyK"/>
                         <segue destination="Wnb-o0-547" kind="relationship" relationship="viewControllers" id="1Xc-N8-tlo"/>
                         <segue destination="BPl-GE-Uge" kind="relationship" relationship="viewControllers" id="vbl-u4-nlx"/>
+                        <segue destination="eEK-ko-q0n" kind="presentation" identifier="MenuSegue" id="ZPg-0q-TOC"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CZ6-ry-Tm5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -161,10 +162,10 @@
             </objects>
             <point key="canvasLocation" x="140" y="97.601199400299862"/>
         </scene>
-        <!--View Controller-->
+        <!--Menu View Controller-->
         <scene sceneID="TH7-pN-sbH">
             <objects>
-                <viewController id="eEK-ko-q0n" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MenuViewController" id="eEK-ko-q0n" customClass="MenuViewController" customModule="RSS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KWC-u0-Rw6"/>
                         <viewControllerLayoutGuide type="bottom" id="cNH-Gd-qmM"/>
@@ -172,12 +173,34 @@
                     <view key="view" contentMode="scaleToFill" id="aEr-of-2zj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFb-de-r4e">
+                                <rect key="frame" x="155" y="132" width="64" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="AppCoda"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="k4z-pP-lrw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ltj-L3-OOr">
+                                <rect key="frame" x="124" y="190" width="126" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="This Week in Swift"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="Dmu-Ji-WnH"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="AppCodaButton" destination="RFb-de-r4e" id="xat-zU-mI8"/>
+                        <outlet property="weekInSwiftButton" destination="Ltj-L3-OOr" id="r2M-qB-fcE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Sp-43-98d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-994" y="906"/>
+            <point key="canvasLocation" x="-994.39999999999998" y="905.3973013493254"/>
         </scene>
         <!--Item-->
         <scene sceneID="toV-mW-5Hi">

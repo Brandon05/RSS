@@ -58,6 +58,8 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
                 presentedView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
                 presentedView.alpha = 0
                 containerView.addSubview(presentedView)
+                //containerView.layer.masksToBounds = true
+                //presentedView.layer.masksToBounds = true
                 
                 UIView.animate(withDuration: duration, animations: { 
                     self.circle.transform = CGAffineTransform.identity
@@ -72,7 +74,7 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
             }
             
         } else {
-            let transitionModeKey = (transitionMode == .pop) ? UITransitionContextViewKey.to : UITransitionContextViewKey.to
+            let transitionModeKey = (transitionMode == .pop) ? UITransitionContextViewKey.to : UITransitionContextViewKey.from
             
             if let returningView = transitionContext.view(forKey: transitionModeKey) {
                 let viewCenter = returningView.center
@@ -84,8 +86,9 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
                 circle.center = startingPoint
                 
                 UIView.animate(withDuration: duration, animations: { 
-                    self.circle.transform = CGAffineTransform.identity
-                    returningView.transform = CGAffineTransform.identity
+                    self.circle.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+                    returningView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
+                    returningView.center = self.startingPoint
                     returningView.alpha = 0
                     
                     if self.transitionMode == .pop {
@@ -107,10 +110,11 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
     }
     
     func frameForCircle(withViewCenter viewCenter: CGPoint, viewSize: CGSize, startPoint: CGPoint) -> CGRect {
-    let xLength = fmax(startPoint.x, viewSize.width - startPoint.x)
+        let xLength = fmax(startPoint.x, viewSize.width - startPoint.x)
         let yLength = fmax(startPoint.y, viewSize.height - startPoint.y)
         
-        let offsetVector = sqrt(xLength * xLength + yLength * yLength)
+        // Multiply by 2 to prevent view from escaping animation!
+        let offsetVector = sqrt(xLength * xLength + yLength * yLength) * 2
         let size = CGSize(width: offsetVector, height: offsetVector)
         
         return CGRect(origin: .zero, size: size)

@@ -13,6 +13,8 @@
 		0202E5EB1E9D355800ED24FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0202E5EA1E9D355800ED24FD /* Assets.xcassets */; };
 		0202E5EE1E9D355800ED24FD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0202E5EC1E9D355800ED24FD /* LaunchScreen.storyboard */; };
 		0202E5F81E9D4FE900ED24FD /* ArticleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0202E5F71E9D4FE900ED24FD /* ArticleViewController.swift */; };
+		024C533A1EA1177300D560AA /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024C53391EA1177300D560AA /* MenuViewController.swift */; };
+		024C533C1EA136DE00D560AA /* Feedly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024C533B1EA136DE00D560AA /* Feedly.swift */; };
 		025DA7021EA01D1900A57201 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025DA7011EA01D1900A57201 /* MainViewController.swift */; };
 		025DA7091EA01E8000A57201 /* ArticleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025DA7071EA01E8000A57201 /* ArticleCell.swift */; };
 		025DA70A1EA01E8000A57201 /* ArticleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 025DA7081EA01E8000A57201 /* ArticleCell.xib */; };
@@ -30,6 +32,8 @@
 		0202E5ED1E9D355800ED24FD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0202E5EF1E9D355800ED24FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0202E5F71E9D4FE900ED24FD /* ArticleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleViewController.swift; sourceTree = "<group>"; };
+		024C53391EA1177300D560AA /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		024C533B1EA136DE00D560AA /* Feedly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feedly.swift; sourceTree = "<group>"; };
 		025DA7011EA01D1900A57201 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		025DA7071EA01E8000A57201 /* ArticleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleCell.swift; sourceTree = "<group>"; };
 		025DA7081EA01E8000A57201 /* ArticleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ArticleCell.xib; sourceTree = "<group>"; };
@@ -85,6 +89,8 @@
 				025DA7081EA01E8000A57201 /* ArticleCell.xib */,
 				025DA70B1EA04D5400A57201 /* CircularTransition.swift */,
 				025DA70D1EA082CB00A57201 /* TabBarController.swift */,
+				024C53391EA1177300D560AA /* MenuViewController.swift */,
+				024C533B1EA136DE00D560AA /* Feedly.swift */,
 			);
 			path = RSS;
 			sourceTree = "<group>";
@@ -234,10 +240,12 @@
 				0202E5E61E9D355800ED24FD /* ViewController.swift in Sources */,
 				025DA70C1EA04D5500A57201 /* CircularTransition.swift in Sources */,
 				0202E5F81E9D4FE900ED24FD /* ArticleViewController.swift in Sources */,
+				024C533C1EA136DE00D560AA /* Feedly.swift in Sources */,
 				0202E5E41E9D355800ED24FD /* AppDelegate.swift in Sources */,
 				025DA70E1EA082CB00A57201 /* TabBarController.swift in Sources */,
 				025DA7091EA01E8000A57201 /* ArticleCell.swift in Sources */,
 				025DA7021EA01D1900A57201 /* MainViewController.swift in Sources */,
+				024C533A1EA1177300D560AA /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

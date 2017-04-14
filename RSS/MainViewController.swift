@@ -13,9 +13,9 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 
     @IBOutlet var feedlyCollectionView: UICollectionView!
     
-    fileprivate let feedUrl         = "feed/http://feeds.feedburner.com/appcoda"
+                var feedUrl         = "feed/http://feeds.feedburner.com/appcoda"
     fileprivate let apiClient       = CloudAPIClient(target: .production)
-    fileprivate var entries         = [Entry]()
+                var entries         = [Entry]()
     fileprivate var pagination      = PaginationParams()
     fileprivate let indicator       = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     fileprivate enum State {
