@@ -8,14 +8,16 @@
 
 import UIKit
 import FeedlyKit
+import Alamofire
 
-class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, FeedDelegate {
+
 
     @IBOutlet var feedlyCollectionView: UICollectionView!
     
     // Set via User Defaults
-                var feedCase        = FeedURL.AppCoda
-                var entries         = [Entry]()
+    fileprivate var feedCase        = FeedURL.AppCoda
+    fileprivate var entries         = [Entry]()
     fileprivate let apiClient       = CloudAPIClient(target: .production)
     fileprivate var pagination      = PaginationParams()
     fileprivate let indicator       = UIActivityIndicatorView(activityIndicatorStyle: .gray)
@@ -28,7 +30,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     }
     fileprivate var state: State = .init {
         didSet {
-            print("SET STATE: - \(state)")
+            //print("SET STATE: - \(state)")
         }
     }
     
@@ -47,7 +49,9 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         feedlyCollectionView.dataSource = self
         
         let nib = UINib(nibName: "ArticleCell", bundle: nil)
+        let nib2 = UINib(nibName: "ArticleImageCell", bundle: nil)
         feedlyCollectionView.register(nib, forCellWithReuseIdentifier: "ArticleCell")
+        feedlyCollectionView.register(nib2, forCellWithReuseIdentifier: "ArticleImageCell")
         feedlyCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "activityIndicator")
         self.feedlyCollectionView.insertSubview(indicator, at: 0)
         indicator.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - indicator.frame.height / 2)
@@ -63,8 +67,8 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        print(state)
-        print(feedCase)
+//        print(state)
+//        print(feedCase)
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,22 +78,37 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = entries.count != 0 ? entries.count : 0
-        print("Count: \(count)")
+//        print("Count: \(count)")
         return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
+        let articleCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
+        let articleImageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleImageCell", for: indexPath) as! ArticleImageCell
         if entries.count > 0 {
             let entry = entries[indexPath.row]
-            cell.titleLabel?.text = entry.title
-            cell.linkLabel?.text = entry.alternate?[0].href
-            print(entry.alternate?.count)
-            print(entry.alternate?[0].href)
+            
+            if let imageUrl = entry.visual?.url {
+                articleImageCell.titleLabel?.text = entry.title
+                articleImageCell.linkLabel?.text = entry.alternate?[0].href
+                Alamofire.download(imageUrl).responseData { response in
+                    if let data = response.result.value {
+                        let image = UIImage(data: data)
+                        articleImageCell.articleImageView.image = image
+                    }
+                }
+                return articleImageCell
+            }
+            
+            articleCell.titleLabel?.text = entry.title
+            articleCell.linkLabel?.text = entry.alternate?[0].href
+            print(entry.actionTimestamp)
+            print(entry.visual?.url)
+//            print(entry.alternate?[0].href)
         }
         
         
-        return cell
+        return articleCell
     }
     
     
@@ -118,12 +137,15 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         let _ = apiClient.fetchContents(feedUrl, paginationParams: paginationNil) {
             if let es = $0.result.value {
                 self.entries.append(contentsOf: es.items)
-                print(self.entries)
-                print(feedUrl)
-                print("Pagination: - \(self.pagination.toParameters())")
+//                print(self.entries)
+//                print(feedUrl)
+//                print("Pagination: - \(self.pagination.toParameters())")
                 
                 
-                self.feedlyCollectionView.reloadData()
+                self.feedlyCollectionView.reloadData() {
+                    self.feedlyCollectionView.fadeIn()
+                }
+                
                 self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
                 self.indicator.stopAnimating()
                 if let c = es.continuation {
@@ -157,11 +179,13 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         let _ = apiClient.fetchContents(feedUrl, paginationParams: pagination) {
             if let es = $0.result.value {
                 self.entries.append(contentsOf: es.items)
-                print(self.entries)
-                print(feedUrl)
-                print("Pagination: - \(self.pagination.toParameters())")
+//                print(self.entries)
+//                print(feedUrl)
+//                print("Pagination: - \(self.pagination.toParameters())")
                 
-                self.feedlyCollectionView.reloadData()
+                self.feedlyCollectionView.reloadData() {
+                    self.feedlyCollectionView.fadeIn()
+                }
                 //self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
                 
                 self.indicator.stopAnimating()
@@ -214,7 +238,20 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         }
     }
     
-
+//    func feedDidChange(to feed: FeedURL) {
+//        feedCase = feed
+//        entries = [Entry]()
+//        fetchFeed()
+//    }
+    
+    internal func feedDidChange(to feed: FeedURL, completion: () -> Void) {
+        feedCase = feed
+        entries = [Entry]()
+        fetchFeed()
+        completion()
+    }
+    
+    
     
     // MARK: - Navigation
 
@@ -232,3 +269,27 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
  
 
 }
+
+
+// Fde Animation Extensions
+
+extension UIView {
+    func fadeOut() {
+        UIView.animate(withDuration: 0.4) {
+            self.alpha = 0
+        }
+    }
+    
+    func fadeIn() {
+        UIView.animate(withDuration: 0.4) {
+            self.alpha = 1
+        }
+    }
+}
+
+
+
+
+
+
+

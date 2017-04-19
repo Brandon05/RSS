@@ -26,6 +26,8 @@ class MenuViewController: UIViewController {
     
     var closeButton: UIButton!
     
+    var delegate: FeedDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,68 +38,13 @@ class MenuViewController: UIViewController {
         super.viewWillAppear(true)
         
         setupCloseButton()
-        self.view.backgroundColor = UIColor.yellow
+        self.view.backgroundColor = UIColor.yellow // same color as menu button
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    @IBAction func feedSelected(_ sender: AnyObject) {
-        guard let button = sender as? UIButton else {
-            return
-        }
-        
-        // Consider moving to protocol; Reference: http://stackoverflow.com/questions/35439041/how-to-send-values-to-a-parent-view-controller-in-swift
-        let tabVC = self.presentingViewController as! TabBarController
-        let navControllerMainVC = tabVC.viewControllers?[1] as! UINavigationController
-        let mainVC = navControllerMainVC.viewControllers[0] as! MainViewController
-        mainVC.entries = [Entry]()
-        
-    
-        //dismissMenu()
-        switch button.tag {
-        case 1:
-            // App Coda
-            mainVC.feedCase = FeedURL.AppCoda
-        case 2:
-            // This Week in Swift
-            mainVC.feedCase = FeedURL.WeekInSwift
-        case 3:
-            mainVC.feedCase = FeedURL.iOSDevWeekly
-        case 4:
-            mainVC.feedCase = FeedURL.BitesOfCocoa
-        case 5:
-            mainVC.feedCase = FeedURL.RayWenderlich
-        case 6:
-            mainVC.feedCase = FeedURL.BobTheDeveloper
-        case 7:
-            mainVC.feedCase = FeedURL.CocoaControls
-        case 8:
-            mainVC.feedCase = FeedURL.iOSDevMedium
-        case 9:
-            mainVC.feedCase = FeedURL.ManiacDev
-        case 10:
-            mainVC.feedCase = FeedURL.OleBegemann
-        case 11:
-            mainVC.feedCase = FeedURL.EricaSadun
-        case 12:
-            mainVC.feedCase = FeedURL.UseYourLoaf
-        default:
-            print("Unknown language")
-            return
-        }
-        
-        tabVC.selectedIndex = 1
-        
-        mainVC.feedlyCollectionView.reloadData {
-            self.dismissMenu()
-            mainVC.fetchFeed()
-        }
-        mainVC.feedlyCollectionView.collectionViewLayout.invalidateLayout()
-        
     }
     
     func setupCloseButton() {
@@ -115,12 +62,78 @@ class MenuViewController: UIViewController {
     }
     
     func dismissMenu() {
-        self.dismiss(animated: true) { 
+        self.dismiss(animated: true) {
             //change feed if neccessary & set index
             
         }
     }
     
+    @IBAction func feedSelected(_ sender: AnyObject) {
+        guard let button = sender as? UIButton, let del = delegate else {
+            return
+        }
+        
+        var feedCase: FeedURL!
+        
+        // view controller casting
+        // Consider moving to protocol; Reference: http://stackoverflow.com/questions/35439041/how-to-send-values-to-a-parent-view-controller-in-swift
+        let tabVC = self.presentingViewController as! TabBarController
+        let navControllerMainVC = tabVC.viewControllers?[1] as! UINavigationController
+        let mainVC = navControllerMainVC.viewControllers[0] as! MainViewController
+        
+        // Segue to proper tab & controller
+        navControllerMainVC.popToRootViewController(animated: true)
+        tabVC.selectedIndex = 1
+        
+        
+        // Handle feed cases
+        switch button.tag {
+        case 1:
+            // App Coda
+            feedCase = FeedURL.AppCoda
+        case 2:
+            // This Week in Swift
+            feedCase = FeedURL.WeekInSwift
+        case 3:
+            // iOS Dev Weekly
+            feedCase = FeedURL.iOSDevWeekly
+        case 4:
+            // Little Bites of Cocoa
+            feedCase = FeedURL.BitesOfCocoa
+        case 5:
+            // Ray Wenderlich
+            feedCase = FeedURL.RayWenderlich
+        case 6:
+            // Bob the Developer
+            feedCase = FeedURL.BobTheDeveloper
+        case 7:
+            // Cocoa Controls
+            feedCase = FeedURL.CocoaControls
+        case 8:
+            // iOS App Development on Medium
+            feedCase = FeedURL.iOSDevMedium
+        case 9:
+            // Maniac Dev
+            feedCase = FeedURL.ManiacDev
+        case 10:
+            // Ole Begemann Blog
+            feedCase = FeedURL.OleBegemann
+        case 11:
+            // Erica Sadun Blog
+            feedCase = FeedURL.EricaSadun
+        case 12:
+            // Use your Loaf
+            feedCase = FeedURL.UseYourLoaf
+        default:
+            return
+        }
+        
+        del.feedDidChange(to: feedCase) {
+        }
+        
+        dismissMenu()
+        
+    }
     
 
     /*
@@ -140,4 +153,8 @@ extension UICollectionView {
         UIView.animate(withDuration: 0, animations: { self.reloadData() })
         { _ in completion() }
     }
+}
+
+protocol FeedDelegate {
+    func feedDidChange(to feed: FeedURL, completion: () -> Void)
 }

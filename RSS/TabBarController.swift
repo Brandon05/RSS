@@ -15,20 +15,10 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupFeedButton()
-        print("load")
-        self.selectedIndex = 1
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        print("appear")
-    }
+        self.selectedIndex = 1 // news feed default tab
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func setupFeedButton() {
@@ -48,17 +38,34 @@ class TabBarController: UITabBarController {
         
     }
     
+    // MARK: - Navigation
+    
     func openFeedController() {
+        
         if self.selectedIndex != 1 {
             self.selectedIndex = 1
+        } else {
+            let nav = self.viewControllers?[1] as! UINavigationController
+            let mainVC = nav.viewControllers[0] as! MainViewController
+            
+            // Scroll to top of feed when pressed while tab is open
+            mainVC.feedlyCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0),
+                                                                          at: .top,
+                                                                          animated: true)
         }
+    
     }
     
     func segueToMenu(_ sender: UILongPressGestureRecognizer) {
         
         switch sender.state {
         case .began:
+            let nav = self.viewControllers?[1] as! UINavigationController
+            let mainVC = nav.viewControllers[0] as! MainViewController
+            mainVC.feedlyCollectionView.fadeOut()
+        
             let menuVC = storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
+            menuVC.delegate = mainVC
             menuVC.transitioningDelegate = self
             menuVC.modalPresentationStyle = .custom
             self.present(menuVC, animated: true, completion: nil)
@@ -68,8 +75,6 @@ class TabBarController: UITabBarController {
         
     }
 
-    
-    // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -80,6 +85,8 @@ class TabBarController: UITabBarController {
  
 
 }
+
+    // MARK: - Transition Delegate
 
 extension TabBarController: UIViewControllerTransitioningDelegate {
     
