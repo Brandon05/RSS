@@ -17,6 +17,7 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         setupFeedButton()
         print("load")
+        self.selectedIndex = 1
         // Do any additional setup after loading the view.
     }
     

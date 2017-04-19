@@ -12,8 +12,16 @@ import FeedlyKit
 enum FeedURL {
     case AppCoda
     case WeekInSwift
-    case iOSDevDaily
+    case iOSDevWeekly
     case BitesOfCocoa
+    case RayWenderlich
+    case CocoaControls
+    case OleBegemann
+    case ManiacDev
+    case EricaSadun
+    case BobTheDeveloper
+    case iOSDevMedium
+    case UseYourLoaf
 }
 
 class Feedly {

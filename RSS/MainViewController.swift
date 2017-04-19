@@ -13,9 +13,10 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 
     @IBOutlet var feedlyCollectionView: UICollectionView!
     
-                var feedUrl         = "feed/http://feeds.feedburner.com/appcoda"
-    fileprivate let apiClient       = CloudAPIClient(target: .production)
+    // Set via User Defaults
+                var feedCase        = FeedURL.AppCoda
                 var entries         = [Entry]()
+    fileprivate let apiClient       = CloudAPIClient(target: .production)
     fileprivate var pagination      = PaginationParams()
     fileprivate let indicator       = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     fileprivate enum State {
@@ -23,8 +24,13 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         case fetching
         case normal
         case complete
+        case error
     }
-    fileprivate var state: State = .init
+    fileprivate var state: State = .init {
+        didSet {
+            print("SET STATE: - \(state)")
+        }
+    }
     
     var articles = [NSDictionary]() {
         didSet {
@@ -50,12 +56,15 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
             flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
         }
         
+        fetchFeed()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        fetchFeed()
+        print(state)
+        print(feedCase)
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,19 +73,21 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return entries.count
+        let count = entries.count != 0 ? entries.count : 0
+        print("Count: \(count)")
+        return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
-        let entry = entries[indexPath.row]
-//        print(cell)
-//        print(entry.title)
-//        print(entry.summary?.content)
-//        print(entry.summary?.toParameters())
-        cell.titleLabel?.text = entry.title
-        cell.descriptionLabel?.text = entry.content?.content
-        cell.linkLabel?.text = entry.alternate?[0].href
+        if entries.count > 0 {
+            let entry = entries[indexPath.row]
+            cell.titleLabel?.text = entry.title
+            cell.linkLabel?.text = entry.alternate?[0].href
+            print(entry.alternate?.count)
+            print(entry.alternate?[0].href)
+        }
+        
         
         return cell
     }
@@ -92,11 +103,53 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let tv = feedlyCollectionView
         if (tv?.contentOffset.y)! >= (tv?.contentSize.height)! - (tv?.bounds.size.height)! && state == .normal {
-            fetchFeed()
+            fetchFeedWithPagination()
         }
     }
     
     func fetchFeed() {
+        
+        let paginationNil = PaginationParams()
+        let feedUrl = grabUrl(for: feedCase)
+        
+        if state == .fetching { print(state); return }
+        indicator.startAnimating()
+        state = .fetching
+        let _ = apiClient.fetchContents(feedUrl, paginationParams: paginationNil) {
+            if let es = $0.result.value {
+                self.entries.append(contentsOf: es.items)
+                print(self.entries)
+                print(feedUrl)
+                print("Pagination: - \(self.pagination.toParameters())")
+                
+                
+                self.feedlyCollectionView.reloadData()
+                self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
+                self.indicator.stopAnimating()
+                if let c = es.continuation {
+                    print(c)
+                    self.pagination.continuation = c
+                    self.state = .normal
+                } else {
+                    self.state = .complete
+                }
+            }
+        }
+        
+        self.timeout(10, closure: {
+            // Should have a 'error' state
+            self.state = .normal
+            if self.entries.count == 0 {
+                self.fetchFeed()
+            }
+            return
+        })
+        
+    }
+    
+    func fetchFeedWithPagination() {
+        
+        let feedUrl = grabUrl(for: feedCase)
         
         if state == .fetching { return }
         indicator.startAnimating()
@@ -105,8 +158,12 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
             if let es = $0.result.value {
                 self.entries.append(contentsOf: es.items)
                 print(self.entries)
+                print(feedUrl)
+                print("Pagination: - \(self.pagination.toParameters())")
                 
                 self.feedlyCollectionView.reloadData()
+                //self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
+                
                 self.indicator.stopAnimating()
                 if let c = es.continuation {
                     self.pagination.continuation = c
@@ -116,9 +173,46 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
                 }
             }
         }
+        
+        self.timeout(10, closure: {
+            // Should have a 'error' state
+            self.state = self.state == .complete ? .complete : .normal
+            return
+        })
     }
     
+    func timeout(_ delay: Int, closure: @escaping () -> Void) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + DispatchTimeInterval.seconds(delay), execute: closure)
+    }
     
+    fileprivate func grabUrl(for selected: FeedURL) -> String {
+        switch selected {
+        case .AppCoda:
+            return "feed/http://feeds.feedburner.com/appcoda"
+        case .BitesOfCocoa:
+            return "feed/http://littlebitesofcocoa.com/rss"
+        case .iOSDevWeekly:
+            return "feed/http://iosdevweekly.com/issues.rss"
+        case .WeekInSwift:
+            return "feed/https://swiftnews.curated.co/issues.rss"
+        case .CocoaControls:
+            return "feed/http://feeds.feedburner.com/cocoacontrols"
+        case .EricaSadun:
+            return "feed/http://ericasadun.com/feed/"
+        case .ManiacDev:
+            return "feed/http://feeds.feedburner.com/maniacdev"
+        case .iOSDevMedium:
+            return "feed/https://medium.com/feed/tag/ios-app-development"
+        case .BobTheDeveloper:
+            return "feed/https://medium.com/feed/ios-geek-community"
+        case .OleBegemann:
+            return "feed/http://oleb.net/blog/atom.xml"
+        case .RayWenderlich:
+            return "feed/http://feeds.feedburner.com/RayWenderlich"
+        case .UseYourLoaf:
+            return "feed/http://useyourloaf.com/blog/rss.xml"
+        }
+    }
     
 
     

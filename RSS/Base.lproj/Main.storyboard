@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WAX-m2-QI4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WAX-m2-QI4">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -175,7 +175,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFb-de-r4e">
-                                <rect key="frame" x="155" y="132" width="64" height="30"/>
+                                <rect key="frame" x="53" y="72" width="64" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="AppCoda"/>
                                 <connections>
@@ -183,11 +183,91 @@
                                 </connections>
                             </button>
                             <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ltj-L3-OOr">
-                                <rect key="frame" x="124" y="190" width="126" height="30"/>
+                                <rect key="frame" x="208" y="72" width="126" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="This Week in Swift"/>
                                 <connections>
                                     <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="Dmu-Ji-WnH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5av-1U-S9P">
+                                <rect key="frame" x="31" y="142" width="109" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="iOS Dev Weekly"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="n84-mp-6Gx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KPA-Uf-x58">
+                                <rect key="frame" x="202" y="142" width="138" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Little Bites of Cocoa"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="6FI-nL-jeg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="6" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eCQ-T1-Q2L">
+                                <rect key="frame" x="19" y="202" width="132" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Bob The Developer"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="sMu-Xz-tuo"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bR7-mM-6Vd">
+                                <rect key="frame" x="230" y="202" width="82" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Erica Sadun"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="zVM-1L-NGk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FDH-eo-tEN">
+                                <rect key="frame" x="35" y="283" width="101" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Ole Begemann"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="u5Z-cD-P6F"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GxU-My-f5l">
+                                <rect key="frame" x="223" y="283" width="96" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Use Your Loaf"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="T9H-9E-KPP"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZvX-fW-xwR">
+                                <rect key="frame" x="218" y="362" width="107" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Ray Wenderlich"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="yBO-uH-SIR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="7" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KNn-fe-YJZ">
+                                <rect key="frame" x="32" y="434" width="106" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cocoa Controls"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="nsK-Yw-c7Q"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="9" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eyf-n6-46L">
+                                <rect key="frame" x="231" y="434" width="80" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Maniac Dev"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="lty-Rw-bog"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="8" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9by-56-6Sc">
+                                <rect key="frame" x="10" y="362" width="151" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="iOS App Development"/>
+                                <connections>
+                                    <action selector="feedSelected:" destination="eEK-ko-q0n" eventType="touchUpInside" id="1Qb-19-FeB"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -195,7 +275,17 @@
                     </view>
                     <connections>
                         <outlet property="AppCodaButton" destination="RFb-de-r4e" id="xat-zU-mI8"/>
+                        <outlet property="bitesOfCocoaButton" destination="KPA-Uf-x58" id="x5O-d6-7CO"/>
+                        <outlet property="bobTheDevButton" destination="eCQ-T1-Q2L" id="JSe-gE-U3Z"/>
+                        <outlet property="cocoaButton" destination="KNn-fe-YJZ" id="Ahz-bZ-Ma6"/>
+                        <outlet property="ericaButton" destination="bR7-mM-6Vd" id="7XV-X4-bv3"/>
+                        <outlet property="iosAppDevButton" destination="9by-56-6Sc" id="Sin-9q-lx9"/>
+                        <outlet property="iosDevWeeklyButton" destination="5av-1U-S9P" id="pTq-rF-KdT"/>
+                        <outlet property="loafButton" destination="GxU-My-f5l" id="qYj-EL-Dk2"/>
+                        <outlet property="maniacButton" destination="Eyf-n6-46L" id="uW5-Tg-toU"/>
+                        <outlet property="oleButton" destination="FDH-eo-tEN" id="8v1-ZU-Dgd"/>
                         <outlet property="weekInSwiftButton" destination="Ltj-L3-OOr" id="r2M-qB-fcE"/>
+                        <outlet property="wenderlichButton" destination="ZvX-fW-xwR" id="mdW-g9-WmO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Sp-43-98d" userLabel="First Responder" sceneMemberID="firstResponder"/>

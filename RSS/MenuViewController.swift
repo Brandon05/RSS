@@ -13,6 +13,16 @@ class MenuViewController: UIViewController {
 
     @IBOutlet weak var AppCodaButton: UIButton!
     @IBOutlet weak var weekInSwiftButton: UIButton!
+    @IBOutlet var iosDevWeeklyButton: UIButton!
+    @IBOutlet var bitesOfCocoaButton: UIButton!
+    @IBOutlet var bobTheDevButton: UIButton!
+    @IBOutlet var ericaButton: UIButton!
+    @IBOutlet var oleButton: UIButton!
+    @IBOutlet var loafButton: UIButton!
+    @IBOutlet var iosAppDevButton: UIButton!
+    @IBOutlet var wenderlichButton: UIButton!
+    @IBOutlet var cocoaButton: UIButton!
+    @IBOutlet var maniacButton: UIButton!
     
     var closeButton: UIButton!
     
@@ -45,23 +55,49 @@ class MenuViewController: UIViewController {
         let navControllerMainVC = tabVC.viewControllers?[1] as! UINavigationController
         let mainVC = navControllerMainVC.viewControllers[0] as! MainViewController
         mainVC.entries = [Entry]()
-        tabVC.selectedIndex = 1
-        mainVC.feedlyCollectionView.reloadData()
+        
     
-        dismissMenu()
+        //dismissMenu()
         switch button.tag {
         case 1:
             // App Coda
-            mainVC.feedUrl = "feed/http://feeds.feedburner.com/appcoda"
+            mainVC.feedCase = FeedURL.AppCoda
         case 2:
             // This Week in Swift
-            mainVC.feedUrl = "feed/https://swiftnews.curated.co/issues.rss"
-        case 3: break
-            // Change to French, etc
+            mainVC.feedCase = FeedURL.WeekInSwift
+        case 3:
+            mainVC.feedCase = FeedURL.iOSDevWeekly
+        case 4:
+            mainVC.feedCase = FeedURL.BitesOfCocoa
+        case 5:
+            mainVC.feedCase = FeedURL.RayWenderlich
+        case 6:
+            mainVC.feedCase = FeedURL.BobTheDeveloper
+        case 7:
+            mainVC.feedCase = FeedURL.CocoaControls
+        case 8:
+            mainVC.feedCase = FeedURL.iOSDevMedium
+        case 9:
+            mainVC.feedCase = FeedURL.ManiacDev
+        case 10:
+            mainVC.feedCase = FeedURL.OleBegemann
+        case 11:
+            mainVC.feedCase = FeedURL.EricaSadun
+        case 12:
+            mainVC.feedCase = FeedURL.UseYourLoaf
         default:
             print("Unknown language")
             return
         }
+        
+        tabVC.selectedIndex = 1
+        
+        mainVC.feedlyCollectionView.reloadData {
+            self.dismissMenu()
+            mainVC.fetchFeed()
+        }
+        mainVC.feedlyCollectionView.collectionViewLayout.invalidateLayout()
+        
     }
     
     func setupCloseButton() {
@@ -97,4 +133,11 @@ class MenuViewController: UIViewController {
     }
     */
 
+}
+
+extension UICollectionView {
+    func reloadData(completion: @escaping ()->()) {
+        UIView.animate(withDuration: 0, animations: { self.reloadData() })
+        { _ in completion() }
+    }
 }
