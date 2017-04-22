@@ -38,8 +38,9 @@ class MenuViewController: UIViewController {
         super.viewWillAppear(true)
         
         setupCloseButton()
-        self.view.backgroundColor = UIColor.yellow // same color as menu button
-        
+        self.view.alpha = 0
+        self.view.backgroundColor = UIColor(white: 0, alpha: 0.0) // same color as menu button
+        self.view.fadeIn()
     }
 
     override func didReceiveMemoryWarning() {

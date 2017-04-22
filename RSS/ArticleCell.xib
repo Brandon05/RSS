@@ -39,13 +39,8 @@
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cMM-rf-dPX" secondAttribute="trailing" constant="8" id="814-6m-4PP"/>
-                            <constraint firstItem="cMM-rf-dPX" firstAttribute="top" secondItem="uJy-Os-aNf" secondAttribute="top" constant="8" id="Ibw-lz-mfB"/>
-                            <constraint firstAttribute="trailing" secondItem="WEE-aa-9tn" secondAttribute="trailing" constant="8" id="NRM-NQ-Jxi"/>
-                            <constraint firstItem="cMM-rf-dPX" firstAttribute="leading" secondItem="uJy-Os-aNf" secondAttribute="leading" constant="8" id="aNS-wf-lfw"/>
                             <constraint firstItem="WEE-aa-9tn" firstAttribute="top" secondItem="cMM-rf-dPX" secondAttribute="bottom" constant="13.5" id="fpx-Ol-RW3"/>
-                            <constraint firstItem="WEE-aa-9tn" firstAttribute="leading" secondItem="uJy-Os-aNf" secondAttribute="leading" constant="232" id="gBb-mu-iVf"/>
-                            <constraint firstAttribute="bottom" secondItem="WEE-aa-9tn" secondAttribute="bottom" constant="8" id="mdp-up-ihE"/>
+                            <constraint firstAttribute="width" constant="402" identifier="background width" id="vrw-ih-gim"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EyK-9u-MQD">
@@ -60,16 +55,22 @@
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="uJy-Os-aNf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" id="E4C-6e-LMC"/>
+                <constraint firstAttribute="trailing" secondItem="WEE-aa-9tn" secondAttribute="trailing" constant="12" id="72e-bT-lti"/>
+                <constraint firstItem="uJy-Os-aNf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" identifier="leading" id="E4C-6e-LMC"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="cMM-rf-dPX" secondAttribute="trailing" constant="8" id="Edw-3d-i7e"/>
+                <constraint firstItem="cMM-rf-dPX" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="Es1-Sm-dov"/>
+                <constraint firstItem="cMM-rf-dPX" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="RN8-Ln-8vV"/>
                 <constraint firstItem="uJy-Os-aNf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="YiU-6b-Bkt"/>
                 <constraint firstAttribute="bottom" secondItem="EyK-9u-MQD" secondAttribute="bottom" id="bO9-90-Pvr"/>
                 <constraint firstItem="EyK-9u-MQD" firstAttribute="top" secondItem="uJy-Os-aNf" secondAttribute="bottom" constant="2" id="eio-oc-B9r"/>
+                <constraint firstAttribute="bottom" secondItem="WEE-aa-9tn" secondAttribute="bottom" constant="11" id="nnN-s8-iG5"/>
                 <constraint firstItem="EyK-9u-MQD" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="xTN-uO-rB6"/>
-                <constraint firstAttribute="trailing" secondItem="uJy-Os-aNf" secondAttribute="trailing" constant="4" id="yEp-8W-JiT"/>
+                <constraint firstAttribute="trailing" secondItem="uJy-Os-aNf" secondAttribute="trailing" constant="4" identifier="trailing" id="yEp-8W-JiT"/>
             </constraints>
             <size key="customSize" width="484" height="78"/>
             <connections>
                 <outlet property="cellBackground" destination="uJy-Os-aNf" id="Itk-NI-bIN"/>
+                <outlet property="cellBackgroundWidth" destination="vrw-ih-gim" id="qAG-hn-ida"/>
                 <outlet property="linkLabel" destination="WEE-aa-9tn" id="Vyp-sU-eXH"/>
                 <outlet property="titleLabel" destination="cMM-rf-dPX" id="M3V-NU-JV1"/>
             </connections>

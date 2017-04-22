@@ -8,7 +8,7 @@
 
 import UIKit
 import FeedlyKit
-import Alamofire
+import AlamofireImage
 
 class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, FeedDelegate {
 
@@ -16,11 +16,11 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     @IBOutlet var feedlyCollectionView: UICollectionView!
     
     // Set via User Defaults
-    fileprivate var feedCase        = FeedURL.AppCoda
-    fileprivate var entries         = [Entry]()
-    fileprivate let apiClient       = CloudAPIClient(target: .production)
-    fileprivate var pagination      = PaginationParams()
-    fileprivate let indicator       = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    fileprivate var feedCase = FeedURL.AppCoda
+    fileprivate var entries = [Entry]()
+    fileprivate let apiClient = CloudAPIClient(target: .production)
+    fileprivate var pagination = PaginationParams()
+    fileprivate let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     fileprivate enum State {
         case `init`
         case fetching
@@ -41,6 +41,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     }
     
     var feedButton: UIButton!
+    var atributionLink: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,8 +54,8 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         feedlyCollectionView.register(nib, forCellWithReuseIdentifier: "ArticleCell")
         feedlyCollectionView.register(nib2, forCellWithReuseIdentifier: "ArticleImageCell")
         feedlyCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "activityIndicator")
-        self.feedlyCollectionView.insertSubview(indicator, at: 0)
-        indicator.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - indicator.frame.height / 2)
+        //self.feedlyCollectionView.insertSubview(indicator, at: 0)
+        //indicator.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - indicator.frame.height / 2)
         
         if let flowLayout = feedlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
@@ -88,33 +89,28 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         if entries.count > 0 {
             let entry = entries[indexPath.row]
             
-            if let imageUrl = entry.visual?.url {
+            if let imageUrl = entry.visual?.url, feedCase == FeedURL.CocoaControls {
                 articleImageCell.titleLabel?.text = entry.title
                 articleImageCell.linkLabel?.text = entry.alternate?[0].href
-                Alamofire.download(imageUrl).responseData { response in
-                    if let data = response.result.value {
-                        let image = UIImage(data: data)
-                        articleImageCell.articleImageView.image = image
-                    }
-                }
+                print(imageUrl)
+                articleImageCell.articleImageView.af_setImage(withURL: URL(string: imageUrl)!)
+
                 return articleImageCell
             }
             
-            articleCell.titleLabel?.text = entry.title
-            articleCell.linkLabel?.text = entry.alternate?[0].href
-            print(entry.actionTimestamp)
-            print(entry.visual?.url)
-//            print(entry.alternate?[0].href)
+            articleCell.cellBackgroundWidth?.constant = feedlyCollectionView.frame.width - 8
+            return articleCell.bind(entry)
+            
         }
         
-        
+        //return articleImageCell
         return articleCell
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = feedlyCollectionView.cellForItem(at: indexPath) as! ArticleCell
-        cell.tag = indexPath.row
+        let cell = feedlyCollectionView.cellForItem(at: indexPath)
+        cell?.tag = indexPath.row
         
         performSegue(withIdentifier: "articleSegue", sender: cell)
     }
@@ -147,6 +143,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
                 }
                 
                 self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
+                
                 self.indicator.stopAnimating()
                 if let c = es.continuation {
                     print(c)
@@ -184,9 +181,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 //                print("Pagination: - \(self.pagination.toParameters())")
                 
                 self.feedlyCollectionView.reloadData() {
-                    self.feedlyCollectionView.fadeIn()
                 }
-                //self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
                 
                 self.indicator.stopAnimating()
                 if let c = es.continuation {
@@ -238,13 +233,8 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         }
     }
     
-//    func feedDidChange(to feed: FeedURL) {
-//        feedCase = feed
-//        entries = [Entry]()
-//        fetchFeed()
-//    }
-    
     internal func feedDidChange(to feed: FeedURL, completion: () -> Void) {
+        feedlyCollectionView.alpha = 0 // prepare fade in
         feedCase = feed
         entries = [Entry]()
         fetchFeed()
@@ -258,8 +248,8 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "articleSegue" {
-            let cell = sender as! ArticleCell
-            let linkString = cell.linkLabel.text
+            let cell = sender as! UICollectionViewCell
+            let linkString = entries[cell.tag].alternate?[0].href
             let destination = segue.destination as! ArticleViewController
             if linkString != nil, let url = URL(string: linkString!) {
                 destination.articleLink = url
@@ -271,17 +261,17 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 }
 
 
-// Fde Animation Extensions
+// Fade Animation Extensions
 
 extension UIView {
     func fadeOut() {
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.3) {
             self.alpha = 0
         }
     }
     
     func fadeIn() {
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.3) {
             self.alpha = 1
         }
     }

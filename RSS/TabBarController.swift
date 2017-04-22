@@ -21,10 +21,15 @@ class TabBarController: UITabBarController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        feedButton.fadeIn()
+    }
+    
     func setupFeedButton() {
         feedButton = UIButton(frame: CGRect(x: 0, y: 0, width: 55, height: 55))
         feedButton.layer.cornerRadius = feedButton.frame.size.height / 2
-        feedButton.backgroundColor = UIColor.yellow
+        feedButton.backgroundColor = UIColor(white: 0, alpha: 1)
         feedButton.addTarget(self, action: #selector(openFeedController), for: .touchUpInside)
         
         feedButton.frame.origin.y = view.bounds.height - feedButton.frame.height
@@ -62,13 +67,15 @@ class TabBarController: UITabBarController {
         case .began:
             let nav = self.viewControllers?[1] as! UINavigationController
             let mainVC = nav.viewControllers[0] as! MainViewController
-            mainVC.feedlyCollectionView.fadeOut()
         
             let menuVC = storyboard?.instantiateViewController(withIdentifier: "MenuViewController") as! MenuViewController
             menuVC.delegate = mainVC
             menuVC.transitioningDelegate = self
             menuVC.modalPresentationStyle = .custom
-            self.present(menuVC, animated: true, completion: nil)
+            feedButton.fadeOut()
+            self.present(menuVC, animated: true) {
+                self.feedButton.fadeIn()
+            }
         default:
             break
         }

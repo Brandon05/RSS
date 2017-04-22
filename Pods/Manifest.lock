@@ -1,5 +1,7 @@
 PODS:
   - Alamofire (4.3.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
   - AlamofireRSSParser (2.0.0):
     - Alamofire
   - FeedlyKit (1.0.0):
@@ -10,17 +12,19 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - AlamofireImage (~> 3.1)
   - AlamofireRSSParser
   - FeedlyKit (~> 1.0)
   - Kanna (~> 2.1.0)
 
 SPEC CHECKSUMS:
   Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
   AlamofireRSSParser: bbad0689d597704025c4f101a1a31698fa2c1920
   FeedlyKit: b2d371f164a792bfc9ebd5da9476b57fd6969a9e
   Kanna: 9b4b086c218703f2b94f5b21a466217dd2f9332e
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 83a96cc0d827e9e16537ddd9acc52d3b840df863
+PODFILE CHECKSUM: 86ebfdc8222a02d425242404e4b8922a0467cf8e
 
 COCOAPODS: 1.1.1

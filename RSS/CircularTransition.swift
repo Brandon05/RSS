@@ -66,6 +66,7 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
                     presentedView.transform = CGAffineTransform.identity
                     presentedView.alpha = 1
                     presentedView.center = viewCenter
+                    self.circle.backgroundColor = self.circleColor.withAlphaComponent(0.5)
                     
                 }, completion: { (success: Bool) in
                     transitionContext.completeTransition(success)
@@ -90,6 +91,7 @@ extension CircularTransition: UIViewControllerAnimatedTransitioning {
                     returningView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
                     returningView.center = self.startingPoint
                     returningView.alpha = 0
+                    self.circle.backgroundColor = self.circleColor
                     
                     if self.transitionMode == .pop {
                         containerView.insertSubview(returningView, belowSubview: returningView)
