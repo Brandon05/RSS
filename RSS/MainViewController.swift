@@ -42,6 +42,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     
     var feedButton: UIButton!
     var atributionLink: String?
+    var width: CGFloat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,11 +58,13 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         //self.feedlyCollectionView.insertSubview(indicator, at: 0)
         //indicator.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - indicator.frame.height / 2)
         
-        if let flowLayout = feedlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
-        }
+//        if let flowLayout = feedlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+//            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
+//        }
         
         fetchFeed()
+        
+        width = feedlyCollectionView.frame.width - 8
         
     }
     
@@ -98,7 +101,16 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
                 return articleImageCell
             }
             
-            articleCell.cellBackgroundWidth?.constant = feedlyCollectionView.frame.width - 8
+            
+            //articleCell.cellBackgroundWidth?.constant = width
+            //articleCell.layoutIfNeeded()
+            
+//            if UIScreen.main.bounds.width > 375 {
+//                articleCell.cellBackgroundWidth?.constant = 367
+//            } else {
+//                articleCell.cellBackgroundWidth?.constant = 367
+//            }
+            
             return articleCell.bind(entry)
             
         }
@@ -117,7 +129,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let tv = feedlyCollectionView
-        if (tv?.contentOffset.y)! >= (tv?.contentSize.height)! - (tv?.bounds.size.height)! && state == .normal {
+        if (tv?.contentOffset.y)! >= (tv?.contentSize.height)! - (tv?.bounds.size.height)! - 50 && state == .normal {
             fetchFeedWithPagination()
         }
     }
@@ -239,6 +251,25 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         entries = [Entry]()
         fetchFeed()
         completion()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        //let cell = collectionView.cellForItem(at: indexPath) as! ArticleCell
+        let cellWidth = feedlyCollectionView.frame.width - 8
+        //let height = cell.titleLabel.frame.height + 100
+        if let cell = ArticleCell.fromNib() {
+            let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
+            cell.bind(entries[indexPath.row])
+            let entry = entries[indexPath.row]
+            cell.titleLabel?.text = entry.title
+            cell.linkLabel?.text = entry.alternate?[0].href
+            cell.titleLabel.preferredMaxLayoutWidth = 200//cellWidth - cellMargins
+            cell.cellBackgroundWidth.constant = cellWidth - 20 //- cellMargins //adjust the width to be correct for the number of columns
+            print("cellWidth: \(cellWidth) - cellMargin \(cellMargins)")
+            print(cell.cellBackgroundWidth)
+            return cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)//CGSize(width: feedlyCollectionView.frame.width, height: cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height) //apply auto layout and retrieve the size of the cell
+        }
+        return CGSize.zero
     }
     
     
