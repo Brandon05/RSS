@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ArticleImageCell: UICollectionViewCell {
+class ArticleImageCell: UITableViewCell {
 
     @IBOutlet var cellBackground: UIView!
     @IBOutlet var titleLabel: UILabel!
@@ -18,8 +18,8 @@ class ArticleImageCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        titleLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 20
-        linkLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 200
+        //titleLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 20
+        //linkLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 200
     }
 
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WAX-m2-QI4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WAX-m2-QI4">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -40,29 +40,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sp2-oH-WNl">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="E7d-Ud-4HF">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="tUt-S0-5Ic">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="sp2-oH-WNl" secondAttribute="bottom" id="5nE-HZ-D8p"/>
-                            <constraint firstItem="sp2-oH-WNl" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Jz3-Bx-kad"/>
-                            <constraint firstAttribute="trailing" secondItem="sp2-oH-WNl" secondAttribute="trailing" id="YBe-SF-tbH"/>
-                            <constraint firstItem="sp2-oH-WNl" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="kVP-sB-q5o"/>
+                            <constraint firstAttribute="trailing" secondItem="E7d-Ud-4HF" secondAttribute="trailing" id="8oQ-4z-xSJ"/>
+                            <constraint firstItem="E7d-Ud-4HF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="9ve-t0-DiB"/>
+                            <constraint firstItem="E7d-Ud-4HF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Zwo-7X-kqC"/>
+                            <constraint firstAttribute="bottom" secondItem="E7d-Ud-4HF" secondAttribute="bottom" id="gQK-Lf-cGL"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rct-PV-pNp"/>
                     <connections>
-                        <outlet property="feedlyCollectionView" destination="sp2-oH-WNl" id="eOH-vu-22j"/>
+                        <outlet property="feedlyTableView" destination="E7d-Ud-4HF" id="sDZ-vR-C4Y"/>
                         <segue destination="wL2-vb-gtE" kind="show" identifier="articleSegue" id="rhq-YH-9cR"/>
                     </connections>
                 </viewController>

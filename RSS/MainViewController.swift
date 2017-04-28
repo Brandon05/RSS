@@ -10,10 +10,10 @@ import UIKit
 import FeedlyKit
 import AlamofireImage
 
-class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, FeedDelegate {
+class MainViewController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FeedDelegate {
 
 
-    @IBOutlet var feedlyCollectionView: UICollectionView!
+    @IBOutlet var feedlyTableView: UITableView!
     
     // Set via User Defaults
     fileprivate var feedCase = FeedURL.AppCoda
@@ -47,39 +47,23 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        feedlyCollectionView.delegate = self
-        feedlyCollectionView.dataSource = self
+        feedlyTableView.delegate = self
+        feedlyTableView.dataSource = self
         
         let nib = UINib(nibName: "ArticleCell", bundle: nil)
         let nib2 = UINib(nibName: "ArticleImageCell", bundle: nil)
-        feedlyCollectionView.register(nib, forCellWithReuseIdentifier: "ArticleCell")
-        feedlyCollectionView.register(nib2, forCellWithReuseIdentifier: "ArticleImageCell")
-        feedlyCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "activityIndicator")
+        feedlyTableView.register(nib, forCellReuseIdentifier: "ArticleCell")
+        feedlyTableView.rowHeight = UITableViewAutomaticDimension
+        feedlyTableView.estimatedRowHeight = 100
+        feedlyTableView.register(nib2, forCellReuseIdentifier: "ArticleImageCell")
+        //feedlyTableView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "activityIndicator")
         //self.feedlyCollectionView.insertSubview(indicator, at: 0)
         //indicator.center = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height - indicator.frame.height / 2)
         
-//        if let flowLayout = feedlyCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-//            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
-//        }
-        
-        setLayoout()
-        
         fetchFeed()
         
-        width = feedlyCollectionView.frame.width - 8
+        width = feedlyTableView.frame.width - 8
         
-    }
-    
-    func setLayoout() {
-        // Layout
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        if #available(iOS 10.0, *) {
-            layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
-        } else {
-            layout.estimatedItemSize = CGSize(width: self.feedlyCollectionView.bounds.width - 10, height: 80)
-        }
-        self.feedlyCollectionView.collectionViewLayout = layout
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,42 +72,42 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 //        print(state)
 //        print(feedCase)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = entries.count != 0 ? entries.count : 0
-//        print("Count: \(count)")
+    
         return count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let articleCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
-        let articleImageCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleImageCell", for: indexPath) as! ArticleImageCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let articleCell = tableView.dequeueReusableCell(withIdentifier: "ArticleCell", for: indexPath) as! ArticleCell
+        let articleImageCell = tableView.dequeueReusableCell(withIdentifier: "ArticleImageCell", for: indexPath) as! ArticleImageCell
         if entries.count > 0 {
             let entry = entries[indexPath.row]
             
-            if let imageUrl = entry.visual?.url, feedCase == FeedURL.CocoaControls {
+            if let imageUrl = entry.visual?.url, feedCase == FeedURL.CocoaControls || feedCase == FeedURL.ManiacDev {
                 articleImageCell.titleLabel?.text = entry.title
                 articleImageCell.linkLabel?.text = entry.alternate?[0].href
                 print(imageUrl)
-                articleImageCell.articleImageView.af_setImage(withURL: URL(string: imageUrl)!)
-
+                //articleImageCell.articleImageView.af_setImage(withURL: URL(string: imageUrl)!)
+                
                 return articleImageCell
             }
-            
-            
-            //articleCell.cellBackgroundWidth?.constant = width
-            //articleCell.layoutIfNeeded()
-            
-            if UIScreen.main.bounds.width > 375 {
-                articleCell.cellBackgroundWidth?.constant = 406
-            } else {
-                articleCell.cellBackgroundWidth?.constant = 367
-            }
+//
+//            
+//            //articleCell.cellBackgroundWidth?.constant = width
+//            //articleCell.layoutIfNeeded()
+//            
+//            if UIScreen.main.bounds.width > 375 {
+//                articleCell.cellBackgroundWidth?.constant = 406
+//            } else {
+//                articleCell.cellBackgroundWidth?.constant = 367
+//            }
             
             return articleCell.bind(entry)
             
@@ -131,18 +115,18 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
         
         //return articleImageCell
         return articleCell
+
     }
     
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = feedlyCollectionView.cellForItem(at: indexPath)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = feedlyTableView.cellForRow(at: indexPath)
         cell?.tag = indexPath.row
         
         performSegue(withIdentifier: "articleSegue", sender: cell)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let tv = feedlyCollectionView
+        let tv = feedlyTableView
         if (tv?.contentOffset.y)! >= (tv?.contentSize.height)! - (tv?.bounds.size.height)! - 200 && state == .normal {
             fetchFeedWithPagination()
         }
@@ -164,11 +148,11 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 //                print("Pagination: - \(self.pagination.toParameters())")
                 
                 
-                self.feedlyCollectionView.reloadData() {
-                    self.feedlyCollectionView.fadeIn()
+                self.feedlyTableView.reloadData() {
+                    self.feedlyTableView.fadeIn()
                 }
                 
-                self.feedlyCollectionView.collectionViewLayout.invalidateLayout()
+                //self.feedlyTableView.collectionViewLayout.invalidateLayout()
                 
                 self.indicator.stopAnimating()
                 if let c = es.continuation {
@@ -206,7 +190,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 //                print(feedUrl)
 //                print("Pagination: - \(self.pagination.toParameters())")
                 
-                self.feedlyCollectionView.reloadData() {
+                self.feedlyTableView.reloadData() {
                 }
                 
                 self.indicator.stopAnimating()
@@ -260,35 +244,12 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     }
     
     internal func feedDidChange(to feed: FeedURL, completion: () -> Void) {
-        feedlyCollectionView.alpha = 0 // prepare fade in
+        feedlyTableView.alpha = 0 // prepare fade in
+        feedlyTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         feedCase = feed
         entries = [Entry]()
         fetchFeed()
         completion()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        //let cell = collectionView.cellForItem(at: indexPath) as! ArticleCell
-//        let cellWidth = feedlyCollectionView.frame.width - 8
-//        //let height = cell.titleLabel.frame.height + 100
-//        if let cell = ArticleCell.fromNib() {
-//            let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
-//            cell.bind(entries[indexPath.row])
-//            let entry = entries[indexPath.row]
-//            cell.titleLabel?.text = entry.title
-//            cell.linkLabel?.text = entry.alternate?[0].href
-//            cell.titleLabel.sizeToFit()
-//            cell.titleLabel.preferredMaxLayoutWidth = 300//cellWidth - cellMargins
-//            print(cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height)
-//            lineCount(cell.titleLabel)
-//            let size = (entry.title)?.size(attributes: nil)
-//            print("Size: \(size)")
-//            cell.cellBackgroundWidth.constant = cellWidth - 20 //- cellMargins //adjust the width to be correct for the number of columns
-//            //print("cellWidth: \(cellWidth) - cellMargin \(cellMargins)")
-//            //print(cell.cellBackgroundWidth)
-//            return CGSize(width: feedlyCollectionView.frame.width - 10, height: cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height) //apply auto layout and retrieve the size of the cell
-//        }
-//        return CGSize.zero
     }
     
     func lineCount(_ yourLabel: UILabel) {
@@ -308,7 +269,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "articleSegue" {
-            let cell = sender as! UICollectionViewCell
+            let cell = sender as! UITableViewCell
             let linkString = entries[cell.tag].alternate?[0].href
             let destination = segue.destination as! ArticleViewController
             if linkString != nil, let url = URL(string: linkString!) {
@@ -319,7 +280,6 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
  
 
 }
-
 
 // Fade Animation Extensions
 

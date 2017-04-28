@@ -149,7 +149,7 @@ class MenuViewController: UIViewController {
 
 }
 
-extension UICollectionView {
+extension UITableView {
     func reloadData(completion: @escaping ()->()) {
         UIView.animate(withDuration: 0, animations: { self.reloadData() })
         { _ in completion() }

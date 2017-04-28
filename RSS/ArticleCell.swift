@@ -9,7 +9,7 @@
 import UIKit
 import FeedlyKit
 
-class ArticleCell: UICollectionViewCell {
+class ArticleCell: UITableViewCell {
 
     @IBOutlet var cellBackground: UIView!
     @IBOutlet var titleLabel: UILabel!
@@ -21,9 +21,9 @@ class ArticleCell: UICollectionViewCell {
         super.awakeFromNib()
         
         // Initialization code
-        self.contentView.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 20
-        linkLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 200
+        //self.contentView.translatesAutoresizingMaskIntoConstraints = false
+        //titleLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 20
+        //linkLabel.preferredMaxLayoutWidth = cellBackground.frame.width - 200
 //        if UIScreen.main.bounds.width > 375 {
 //            cellBackgroundWidth.constant = 367
 //        } else {
@@ -44,10 +44,10 @@ class ArticleCell: UICollectionViewCell {
         return self
     }
     
-    override func layoutSubviews() {
-        contentView.frame = bounds
-        super.layoutSubviews()
-    }
+//    override func layoutSubviews() {
+//        contentView.frame = bounds
+//        super.layoutSubviews()
+//    }
     
 //    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 //        

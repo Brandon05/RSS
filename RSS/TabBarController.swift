@@ -54,7 +54,7 @@ class TabBarController: UITabBarController {
             let mainVC = nav.viewControllers[0] as! MainViewController
             
             // Scroll to top of feed when pressed while tab is open
-            mainVC.feedlyCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0),
+            mainVC.feedlyTableView.scrollToRow(at: IndexPath(row: 0, section: 0),
                                                                           at: .top,
                                                                           animated: true)
         }
