@@ -62,10 +62,24 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
 //            flowLayout.estimatedItemSize = CGSize(width: 1, height: 1)
 //        }
         
+        setLayoout()
+        
         fetchFeed()
         
         width = feedlyCollectionView.frame.width - 8
         
+    }
+    
+    func setLayoout() {
+        // Layout
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        if #available(iOS 10.0, *) {
+            layout.estimatedItemSize = UICollectionViewFlowLayoutAutomaticSize
+        } else {
+            layout.estimatedItemSize = CGSize(width: self.feedlyCollectionView.bounds.width - 10, height: 80)
+        }
+        self.feedlyCollectionView.collectionViewLayout = layout
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,11 +119,11 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
             //articleCell.cellBackgroundWidth?.constant = width
             //articleCell.layoutIfNeeded()
             
-//            if UIScreen.main.bounds.width > 375 {
-//                articleCell.cellBackgroundWidth?.constant = 367
-//            } else {
-//                articleCell.cellBackgroundWidth?.constant = 367
-//            }
+            if UIScreen.main.bounds.width > 375 {
+                articleCell.cellBackgroundWidth?.constant = 406
+            } else {
+                articleCell.cellBackgroundWidth?.constant = 367
+            }
             
             return articleCell.bind(entry)
             
@@ -129,7 +143,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let tv = feedlyCollectionView
-        if (tv?.contentOffset.y)! >= (tv?.contentSize.height)! - (tv?.bounds.size.height)! - 50 && state == .normal {
+        if (tv?.contentOffset.y)! >= (tv?.contentSize.height)! - (tv?.bounds.size.height)! - 200 && state == .normal {
             fetchFeedWithPagination()
         }
     }
@@ -254,22 +268,37 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //let cell = collectionView.cellForItem(at: indexPath) as! ArticleCell
-        let cellWidth = feedlyCollectionView.frame.width - 8
-        //let height = cell.titleLabel.frame.height + 100
-        if let cell = ArticleCell.fromNib() {
-            let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
-            cell.bind(entries[indexPath.row])
-            let entry = entries[indexPath.row]
-            cell.titleLabel?.text = entry.title
-            cell.linkLabel?.text = entry.alternate?[0].href
-            cell.titleLabel.preferredMaxLayoutWidth = 200//cellWidth - cellMargins
-            cell.cellBackgroundWidth.constant = cellWidth - 20 //- cellMargins //adjust the width to be correct for the number of columns
-            print("cellWidth: \(cellWidth) - cellMargin \(cellMargins)")
-            print(cell.cellBackgroundWidth)
-            return cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)//CGSize(width: feedlyCollectionView.frame.width, height: cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height) //apply auto layout and retrieve the size of the cell
-        }
-        return CGSize.zero
+//        //let cell = collectionView.cellForItem(at: indexPath) as! ArticleCell
+//        let cellWidth = feedlyCollectionView.frame.width - 8
+//        //let height = cell.titleLabel.frame.height + 100
+//        if let cell = ArticleCell.fromNib() {
+//            let cellMargins = cell.layoutMargins.left + cell.layoutMargins.right
+//            cell.bind(entries[indexPath.row])
+//            let entry = entries[indexPath.row]
+//            cell.titleLabel?.text = entry.title
+//            cell.linkLabel?.text = entry.alternate?[0].href
+//            cell.titleLabel.sizeToFit()
+//            cell.titleLabel.preferredMaxLayoutWidth = 300//cellWidth - cellMargins
+//            print(cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height)
+//            lineCount(cell.titleLabel)
+//            let size = (entry.title)?.size(attributes: nil)
+//            print("Size: \(size)")
+//            cell.cellBackgroundWidth.constant = cellWidth - 20 //- cellMargins //adjust the width to be correct for the number of columns
+//            //print("cellWidth: \(cellWidth) - cellMargin \(cellMargins)")
+//            //print(cell.cellBackgroundWidth)
+//            return CGSize(width: feedlyCollectionView.frame.width - 10, height: cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height) //apply auto layout and retrieve the size of the cell
+//        }
+//        return CGSize.zero
+    }
+    
+    func lineCount(_ yourLabel: UILabel) {
+        var lineCount: Int = 0
+        let textSize = CGSize(width: CGFloat(yourLabel.frame.size.width), height: CGFloat(MAXFLOAT))
+        let rHeight: Int = lroundf(Float(yourLabel.sizeThatFits(textSize).height))
+        let charSize: Int = lroundf(Float(yourLabel.font.lineHeight))
+        print(yourLabel.font.leading)
+        lineCount = rHeight / charSize
+        print("No of lines: \(lineCount)")
     }
     
     

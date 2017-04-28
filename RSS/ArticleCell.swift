@@ -15,6 +15,7 @@ class ArticleCell: UICollectionViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var linkLabel: UILabel!
     @IBOutlet var cellBackgroundWidth: NSLayoutConstraint!
+    @IBOutlet weak var titleLabelHeight: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,7 +31,7 @@ class ArticleCell: UICollectionViewCell {
 //        }
         //let width = UIScreen.main.bounds.width - 8
         //cellBackgroundWidth.constant = 200//UIScreen.main.bounds.width - 8
-        print(UIScreen.main.bounds.width)
+        //print(UIScreen.main.bounds.width)
     }
     
     func bind(_ entry: Entry) -> Self {
